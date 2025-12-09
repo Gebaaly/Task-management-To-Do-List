@@ -225,12 +225,12 @@ function cancelCreateTask() {
 </script>
 
 <template>
-  <div class="space-y-5">
+  <div class="max-w-6xl mx-auto px-4 py-6 space-y-6">
     <!-- header area inside dashboard -->
-    <div class=" space-y-4">
-      <div class="p-5 flex items-end justify-between gap-4">
+    <div class="space-y-4">
+      <div class="px-5 py-6 flex items-end justify-between gap-4">
         <div>
-          <h1 class=" text-xl font-bold text-slate-900">Tasky</h1>
+          <h1 class="text-2xl font-bold text-slate-900">Tasky</h1>
         </div>
         <button
           class="inline-flex items-center gap-2 rounded-full bg-amber-400 px-4 py-2 text-xs font-medium text-slate-900 shadow-sm hover:bg-amber-300"
@@ -241,7 +241,7 @@ function cancelCreateTask() {
       </div>
 
       <!-- filters row across the top -->
-      <section class="bg-white rounded-3xl shadow-sm border border-slate-100 px-5 py-4 flex flex-wrap items-end gap-4 text-xs">
+      <section class="bg-white rounded-3xl shadow-sm border border-slate-100 px-5 py-5 flex flex-wrap items-end gap-4 text-xs">
         <div class="space-y-1 min-w-[140px]">
           <p class="font-medium text-slate-700">Category</p>
           <select
@@ -289,23 +289,41 @@ function cancelCreateTask() {
     <!-- loading / error / empty states for whole dashboard -->
     <div v-if="tasksStore.loadingList" class="grid gap-5 lg:grid-cols-2 mt-4">
       <section class="bg-white rounded-3xl shadow-sm border border-slate-100 p-5 space-y-3">
-        <div class="h-4 w-32 rounded-full bg-slate-100 animate-pulse" />
-        <div class="grid gap-3 md:grid-cols-2">
+        <div class="flex items-center justify-between gap-3 mb-2">
+          <div class="h-4 w-32 rounded-full bg-slate-100 animate-pulse" />
+        </div>
+        <div class="mt-1 space-y-3">
           <div
             v-for="n in 4"
             :key="n"
-            class="h-32 rounded-2xl bg-slate-50 border border-slate-100 animate-pulse"
-          />
+            class="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 space-y-2 animate-pulse"
+          >
+            <div class="h-3 w-3/4 rounded-full bg-slate-200" />
+            <div class="h-3 w-1/2 rounded-full bg-slate-100" />
+            <div class="flex gap-2 mt-1">
+              <div class="h-4 w-16 rounded-full bg-slate-100" />
+              <div class="h-4 w-12 rounded-full bg-slate-100" />
+            </div>
+          </div>
         </div>
       </section>
       <section class="bg-white rounded-3xl shadow-sm border border-slate-100 p-5 space-y-3">
-        <div class="h-4 w-32 rounded-full bg-slate-100 animate-pulse" />
-        <div class="grid gap-3 md:grid-cols-2">
+        <div class="flex items-center justify-between gap-3 mb-2">
+          <div class="h-4 w-32 rounded-full bg-slate-100 animate-pulse" />
+        </div>
+        <div class="mt-1 space-y-3">
           <div
             v-for="n in 4"
             :key="n"
-            class="h-32 rounded-2xl bg-slate-50 border border-slate-100 animate-pulse"
-          />
+            class="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 space-y-2 animate-pulse"
+          >
+            <div class="h-3 w-3/4 rounded-full bg-slate-200" />
+            <div class="h-3 w-1/2 rounded-full bg-slate-100" />
+            <div class="flex gap-2 mt-1">
+              <div class="h-4 w-16 rounded-full bg-slate-100" />
+              <div class="h-4 w-12 rounded-full bg-slate-100" />
+            </div>
+          </div>
         </div>
       </section>
     </div>
@@ -342,16 +360,14 @@ function cancelCreateTask() {
           <div v-if="!activeTasks.length" class="text-xs text-slate-400 text-center mt-4">
             No active tasks.
           </div>
-          <div v-else class="mt-1">
-            <div class="grid gap-3 md:grid-cols-2">
-              <TaskCard
-                v-for="task in activeTasks"
-                :key="task.id"
-                :task="task"
-                :category="categoriesStore.getById(task.category_id)"
-                @open="openTaskFromDashboard"
-              />
-            </div>
+          <div v-else class="mt-1 space-y-3">
+            <TaskCard
+              v-for="task in activeTasks"
+              :key="task.id"
+              :task="task"
+              :category="categoriesStore.getById(task.category_id)"
+              @open="openTaskFromDashboard"
+            />
           </div>
           <!-- active tasks pagination -->
           <div
@@ -390,16 +406,14 @@ function cancelCreateTask() {
           <div v-if="!completedTasks.length" class="text-xs text-slate-400 text-center mt-4">
             No completed tasks yet.
           </div>
-          <div v-else class="mt-1">
-            <div class="grid gap-3 md:grid-cols-2">
-              <TaskCard
-                v-for="task in completedTasks"
-                :key="task.id"
-                :task="task"
-                :category="categoriesStore.getById(task.category_id)"
-                @open="openTaskFromDashboard"
-              />
-            </div>
+          <div v-else class="mt-1 space-y-3">
+            <TaskCard
+              v-for="task in completedTasks"
+              :key="task.id"
+              :task="task"
+              :category="categoriesStore.getById(task.category_id)"
+              @open="openTaskFromDashboard"
+            />
           </div>
           <!-- completed tasks pagination -->
           <div
