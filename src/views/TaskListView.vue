@@ -349,11 +349,11 @@ function cancelCreateTask() {
     <div v-else class="mt-4">
       <div class="grid gap-5 lg:grid-cols-2">
         <!-- Active tasks column -->
-        <section class="bg-white rounded-3xl shadow-sm border border-slate-100 p-5 flex flex-col">
-          <div class="flex items-center justify-between gap-3 mb-4">
+        <section class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 flex flex-col">
+          <div class="flex items-center justify-between gap-3 mb-5">
             <div>
-              <h2 class="text-sm font-semibold text-slate-800">Active tasks</h2>
-              <p class="text-[11px] text-slate-400">{{ activeTasks.length }} active task(s).</p>
+              <h2 class="text-base font-semibold text-slate-900 tracking-tight">Active tasks</h2>
+              <p class="text-[12px] text-slate-400 mt-0.5">{{ activeTasks.length }} active task(s).</p>
             </div>
           </div>
 
@@ -395,11 +395,11 @@ function cancelCreateTask() {
         </section>
 
         <!-- Completed tasks column -->
-        <section class="bg-white rounded-3xl shadow-sm border border-slate-100 p-5 flex flex-col">
-          <div class="flex items-center justify-between gap-3 mb-4">
+        <section class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 flex flex-col">
+          <div class="flex items-center justify-between gap-3 mb-5">
             <div>
-              <h2 class="text-sm font-semibold text-slate-800">Completed tasks</h2>
-              <p class="text-[11px] text-slate-400">{{ completedTasks.length }} completed task(s).</p>
+              <h2 class="text-base font-semibold text-slate-900 tracking-tight">Completed tasks</h2>
+              <p class="text-[12px] text-slate-400 mt-0.5">{{ completedTasks.length }} completed task(s).</p>
             </div>
           </div>
 
