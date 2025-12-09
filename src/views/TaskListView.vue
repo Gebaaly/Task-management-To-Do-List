@@ -1,28 +1,18 @@
 <script setup>
-// import Vue helpers for lifecycle, reactive refs and computed properties
 import { onMounted, computed, ref, reactive } from 'vue'
-
-// import router and route hooks so we can navigate and read query params
 import { useRouter, useRoute } from 'vue-router'
-
-// import our Pinia stores for tasks and categories
 import { useTasksStore } from '../stores/tasksStore'
 import { useCategoriesStore } from '../stores/categoriesStore'
-
-// import the TaskCard component that shows each task in the grid
 import TaskCard from '../components/TaskCard.vue'
 
-// create store instances so we can use them in this component
 const tasksStore = useTasksStore()
 const categoriesStore = useCategoriesStore()
 
-// state for simple modal when user clicks a task card
 const showDetailModal = ref(false)
 const selectedTaskForModal = ref(null)
 const confirmingDeleteFromModal = ref(false)
 const isEditingModal = ref(false)
 
-// local form state for editing inside the modal
 const modalForm = reactive({
   id: null,
   title: '',
@@ -33,7 +23,6 @@ const modalForm = reactive({
   completed: false,
 })
 
-// state and form for creating a new task from dashboard
 const showCreateModal = ref(false)
 const createForm = reactive({
   title: '',
@@ -44,31 +33,23 @@ const createForm = reactive({
   completed: false,
 })
 
-// get the router instance to push new routes and current route for query params
 const router = useRouter()
 const route = useRoute()
 
-// when the component is mounted, load categories and tasks
 onMounted(() => {
-  // load all categories from the API
   categoriesStore.loadCategories()
-  // load tasks with the current filters
   tasksStore.loadTasks()
 })
 
-// local search text for tasks
 const searchQuery = ref('')
 
-// computed helper to return tasks filtered by search query
 const filteredTasks = computed(() => {
-  // if search is empty, return all tasks
   if (!searchQuery.value.trim()) {
     return tasksStore.items
   }
 
   const q = searchQuery.value.toLowerCase()
 
-  // match if the query exists in the title or description
   return tasksStore.items.filter((task) => {
     const title = (task.title || '').toLowerCase()
     const description = (task.description || '').toLowerCase()
@@ -76,16 +57,13 @@ const filteredTasks = computed(() => {
   })
 })
 
-// simple pagination state for dashboard tasks (separate for active / completed)
 const activePage = ref(1)
 const completedPage = ref(1)
 const pageSize = 20
 
-// all active / completed tasks after filters and search
 const allActiveTasks = computed(() => filteredTasks.value.filter((t) => !t.completed))
 const allCompletedTasks = computed(() => filteredTasks.value.filter((t) => !!t.completed))
 
-// total pages for each list
 const activeTotalPages = computed(() => {
   if (!allActiveTasks.value.length) return 1
   return Math.ceil(allActiveTasks.value.length / pageSize)
@@ -96,7 +74,6 @@ const completedTotalPages = computed(() => {
   return Math.ceil(allCompletedTasks.value.length / pageSize)
 })
 
-// tasks on the current page for each list
 const activeTasks = computed(() => {
   const start = (activePage.value - 1) * pageSize
   const end = start + pageSize
@@ -109,10 +86,8 @@ const completedTasks = computed(() => {
   return allCompletedTasks.value.slice(start, end)
 })
 
-// helper to know if we have any tasks after filtering
 const hasTasks = computed(() => filteredTasks.value.length > 0)
 
-// open the create-task modal instead of navigating to a new page
 function onAddTask() {
   createForm.title = ''
   createForm.description = ''
@@ -123,21 +98,18 @@ function onAddTask() {
   showCreateModal.value = true
 }
 
-// reload tasks again if something went wrong
 function onRetry() {
   activePage.value = 1
   completedPage.value = 1
   tasksStore.loadTasks()
 }
 
-// whenever a filter changes, reload the task list
 function onFilterChange() {
   activePage.value = 1
   completedPage.value = 1
   tasksStore.loadTasks()
 }
 
-// change current page for active / completed pagination controls
 function goToActivePage(page) {
   if (page < 1) return
   if (page > activeTotalPages.value) return
@@ -150,13 +122,11 @@ function goToCompletedPage(page) {
   completedPage.value = page
 }
 
-// open modal with task details from dashboard
 function openTaskFromDashboard(task) {
   selectedTaskForModal.value = task
   showDetailModal.value = true
   isEditingModal.value = false
 
-  // copy fields into modal form for possible editing
   modalForm.id = task.id
   modalForm.title = task.title || ''
   modalForm.description = task.description || ''
@@ -176,7 +146,6 @@ function closeTaskModal() {
 async function toggleCompletedFromModal() {
   if (!selectedTaskForModal.value) return
   await tasksStore.toggleCompleted(selectedTaskForModal.value)
-  // refresh selected task reference from store so UI reflects latest state
   const updated = tasksStore.items.find((t) => t.id === selectedTaskForModal.value.id)
   if (updated) {
     selectedTaskForModal.value = updated
@@ -213,7 +182,6 @@ async function saveModalEdit() {
 
   try {
     await tasksStore.saveTask(modalForm, !!modalForm.id)
-    // reload tasks list to reflect changes
     await tasksStore.loadTasks()
     isEditingModal.value = false
     // keep modal open but selectedTask will be updated from store items next time
@@ -238,7 +206,6 @@ function cancelModalEdit() {
   isEditingModal.value = false
 }
 
-// save a new task from the create modal
 async function saveCreateTask() {
   if (!createForm.title.trim()) return
   if (!createForm.categoryId) return

@@ -1,12 +1,11 @@
 <script setup>
-// define props that this component expects from the parent
+import { defineProps, defineEmits } from 'vue'
+
 const props = defineProps({
-  // the task object to display
   task: {
     type: Object,
     required: true,
   },
-  // the category object for this task (can be null)
   category: {
     type: Object,
     required: false,
@@ -14,7 +13,6 @@ const props = defineProps({
   },
 })
 
-// emit event so parent can decide how to show details (modal, page, etc.)
 const emit = defineEmits(['open'])
 
 function openDetail() {
@@ -23,12 +21,10 @@ function openDetail() {
 </script>
 
 <template>
-  <!-- light task card: simple, no image, matches dashboard colors -->
   <article
     class="bg-white border border-slate-100 rounded-2xl px-4 py-3 flex flex-col gap-2 cursor-pointer hover:border-amber-300 hover:shadow-sm transition"
     @click="openDetail"
   >
-    <!-- title and status badge -->
     <div class="flex items-start justify-between gap-2">
       <h2 class="text-sm font-semibold text-slate-900 line-clamp-2">
         {{ task.title || 'Untitled task' }}
@@ -44,12 +40,10 @@ function openDetail() {
       </span>
     </div>
 
-    <!-- small description preview -->
     <p class="text-[11px] text-slate-500 line-clamp-2 min-h-[32px]">
       {{ task.description || 'No description provided' }}
     </p>
 
-    <!-- bottom meta: category, priority, due date -->
     <div class="flex items-center justify-between text-[11px] text-slate-500 mt-1">
       <div class="flex items-center gap-2" v-if="category">
         <span

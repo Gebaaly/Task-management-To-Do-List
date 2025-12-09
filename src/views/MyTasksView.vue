@@ -10,7 +10,6 @@ const route = useRoute()
 
 const searchQuery = ref(route.query.q || '')
 
-// simple pagination state
 const page = ref(1)
 const pageSize = 20
 
@@ -65,7 +64,6 @@ function categoryFor(task) {
         <p>{{ filteredTasks.length }} task(s)</p>
       </div>
 
-      <!-- loading state -->
       <div v-if="tasksStore.loadingList" class="space-y-2">
         <div class="h-4 w-32 rounded-full bg-slate-100 animate-pulse" />
         <div
@@ -75,7 +73,6 @@ function categoryFor(task) {
         />
       </div>
 
-      <!-- error state -->
       <div v-else-if="tasksStore.errorList" class="max-w-md text-xs">
         <p class="text-red-500 mb-2">{{ tasksStore.errorList }}</p>
         <button
@@ -86,12 +83,10 @@ function categoryFor(task) {
         </button>
       </div>
 
-      <!-- empty state -->
       <div v-else-if="!filteredTasks.length" class="text-xs text-slate-400 text-center py-6">
         No tasks to show.
       </div>
 
-      <!-- table-like list -->
       <div v-else class="space-y-2 text-xs">
         <div class="hidden md:grid grid-cols-[minmax(0,2.5fr)_minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1fr)] px-3 py-2 text-[11px] text-slate-400">
           <span>Title</span>
